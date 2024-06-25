@@ -1,0 +1,43 @@
+cams:
+  view-Contour2:
+    name: view-Contour2
+    path: multiview-object-tracking-dataset/CAMPUS/Garden1/Video/view-Contour2.mp4
+    size: [1080,1920]
+  view-HC2:
+    name: view-HC2
+    path: multiview-object-tracking-dataset/CAMPUS/Garden1/Video/view-HC2.mp4
+    size: [1080,1920]
+  view-IP1:
+    name: view-IP1
+    path: multiview-object-tracking-dataset/CAMPUS/Garden1/Video/view-IP1.mp4
+    size: [1080,1920]
+  view-HC3:
+    name: view-HC3
+    path: multiview-object-tracking-dataset/CAMPUS/Garden1/Video/view-HC3.mp4
+    size: [1080,1920]
+
+frames: 100
+
+# setting for each step
+preprocessing:
+  singletrack_output : "bytetrack_output/campus_dataset/garden1"
+  maximum_disappeared_frame : 90
+  output_path: preprocessing_output/campus_dataset/garden1
+  hormography: multiview-object-tracking-dataset/CAMPUS/Garden1/Hormography
+
+# feature extraction
+extracting_feature:
+  model_name: 'osnet_x1_0'
+  batch_size: 160
+  model_path: deep-person-reid/weights/osnet_ms_d_c.pth.tar
+  output_path: extract_feature/campus_dataset/garden1
+  device: cpu
+# matching
+match:
+    params:
+        LOCATION_COEF: 0.5 # location importance
+        LOCATION_THRESH: 47
+        APPEARANCE_THRESH: 55
+    out_dir: match/campus_dataset/garden1
+    refined_dir: data/match_refined/campus_dataset/garden1
+log: true

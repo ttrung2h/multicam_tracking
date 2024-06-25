@@ -1,0 +1,7 @@
+multiview-object-tracking-dataset/
+extract_feature/
+match/
+preprocessing_output/
+bytetrack_output/
+deep-person-reid/weights/
+deep-person-reid/

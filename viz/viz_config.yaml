@@ -1,0 +1,16 @@
+input:
+  videos:
+    - multiview-object-tracking-dataset/CAMPUS/Garden1/Video/view-IP1.mp4
+    - multiview-object-tracking-dataset/CAMPUS/Garden1/Video/view-Contour2.mp4
+    - multiview-object-tracking-dataset/CAMPUS/Garden1/Video/view-HC3.mp4
+    - multiview-object-tracking-dataset/CAMPUS/Garden1/Video/view-HC2.mp4
+  annotations:
+    - preprocessing_output/campus_dataset/garden1/view-IP1.txt
+    - preprocessing_output/campus_dataset/garden1/view-Contour2.txt
+    - preprocessing_output/campus_dataset/garden1/view-HC3.txt
+    - preprocessing_output/campus_dataset/garden1/view-HC2.txt
+  task : preprocessing
+output:
+  size: [1920, 1080]
+  output_dir: preprocessing_output/campus_dataset/video_output
+  fps: 30
