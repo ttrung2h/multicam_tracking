@@ -1,1 +1,0 @@
-frame,id,old_id,l,t,w,h,s,gpx,gpy
