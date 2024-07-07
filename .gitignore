@@ -7,3 +7,5 @@ deep-person-reid/weights/
 deep-person-reid/
 data/
 viz/output_videos
+__pycache__
+cluster_tracking/__pycache__
