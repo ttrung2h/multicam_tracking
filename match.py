@@ -85,12 +85,15 @@ class Matcher:
     def run(self):
         cams = get_cams(self.config)
         input_dir = self.config.extracting_feature.output_path
+        
         for name1, name2 in itertools.combinations(cams, 2):
             cam1 = np.load(os.path.join(input_dir, f"{name1}.npy"))
             cam2 = np.load(os.path.join(input_dir, f"{name2}.npy"))
             self.match_two_camera(name1, name2, cam1, cam2)
+        
             if self.config.log == True:
                 logger.info(f"Matched {name1} and {name2}")
+
 if __name__ == "__main__":
     config_file = "config/garden1.yaml"
     config = OmegaConf.load(config_file)

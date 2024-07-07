@@ -3,6 +3,8 @@ from preprocessing import Preprocessing
 from match import Matcher
 from graph_cut import GraphCutter
 from omegaconf import OmegaConf
+from cluster_tracking.tracker import Tracker
+from postprocess import PostProcessor
 import argparse
 
 def parse_args():
@@ -34,6 +36,14 @@ def main():
     graph_cutter = GraphCutter(config=config)
     graph_cutter.run()
     
+    #Tracking
+    tracker = Tracker(config=config)
+    tracker.run()
+
+    #Post process
+    postprocesser = PostProcessor(config=config)
+    postprocesser.run()
+
 
 if __name__ == "__main__":
     main()

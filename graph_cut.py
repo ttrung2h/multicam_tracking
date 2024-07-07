@@ -28,7 +28,6 @@ class GraphCutter:
                 box = (row[2],row[3],row[4],row[5])
                 G.add_node(gid,name = name,id = id,loc = loc,app = app,conf = conf,box = box)
 
-        # Create edges
 
         # Create edges
         for name1, name2 in matches:
@@ -45,6 +44,7 @@ class GraphCutter:
     def most_node_same_color(self, G: nx.Graph):
         n_points = defaultdict(lambda: 0)
         for node, data in G.nodes.items():
+            # print(data)
             n_points[data['name']] += 1
         return max(n_points.values())
     
@@ -138,7 +138,13 @@ class GraphCutter:
             if name1 > name2:
                 name1, name2 = name2, name1
                 id1, id2 = id2, id1
-            m = matches[(name1, name2)][frame_idx]
+            
+            m = None
+            if (name1, name2) not in matches:
+                m = matches[(name2, name1)][frame_idx]
+            else:    
+                m = matches[(name1, name2)][frame_idx]
+            
             if (id1, id2) in m:
                 m.remove((id1, id2))
             else:

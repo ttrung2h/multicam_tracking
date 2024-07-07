@@ -5,11 +5,11 @@ def get_cams(config):
     return list(config.cams.keys())
 
 def read_track_tables(config):
-    track_tables = []
+    track_tables = {}
     for name in get_cams(config):
         filepath = os.path.join(config["extracting_feature"]["output_path"], f"{name}.npy")
         ttf = np.load(filepath)
-        track_tables.append(ttf)
+        track_tables[name] = ttf
         print("Load", filepath, "with shape", ttf.shape)
     return track_tables
 
@@ -23,4 +23,12 @@ def read_matches_from_dir(path, names):
         f = open(filepath, 'rt')
         matches[(name1, name2)] = eval(f.read())
         print("Read", filepath)
+    return matches
+def read_refined_matches(config):
+    matches = {}
+    for name1, name2 in itertools.combinations(get_cams(config), r=2):
+        path = os.path.join(config['match']['refined_dir'], f"{name1}-{name2}.txt")
+        f = open(path, 'rt')
+        matches[(name1, name2)] = eval(f.read())
+        print("Read", path)
     return matches

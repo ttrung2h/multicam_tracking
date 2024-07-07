@@ -16,13 +16,13 @@ cams:
     path: multiview-object-tracking-dataset/CAMPUS/Garden1/Video/view-HC3.mp4
     size: [1080,1920]
 
-frames: 100
+frames: 50 #2840
 
 # setting for each step
 preprocessing:
   singletrack_output : "bytetrack_output/campus_dataset/garden1"
-  maximum_disappeared_frame : 90
-  output_path: preprocessing_output/campus_dataset/garden1
+  maximum_disappeared_frame : 100
+  output_path: data/preprocessing_output/campus_dataset/garden1
   hormography: multiview-object-tracking-dataset/CAMPUS/Garden1/Hormography
 
 # feature extraction
@@ -30,7 +30,7 @@ extracting_feature:
   model_name: 'osnet_x1_0'
   batch_size: 160
   model_path: deep-person-reid/weights/osnet_ms_d_c.pth.tar
-  output_path: extract_feature/campus_dataset/garden1
+  output_path: data/extract_feature/campus_dataset/garden1
   device: cpu
 # matching
 match:
@@ -38,6 +38,23 @@ match:
         LOCATION_COEF: 0.5 # location importance
         LOCATION_THRESH: 47
         APPEARANCE_THRESH: 55
-    out_dir: match/campus_dataset/garden1
+    out_dir: data/match/campus_dataset/garden1
     refined_dir: data/match_refined/campus_dataset/garden1
 log: true
+
+track_cluster:
+    params:
+        MIN_HITS: 60
+        MAX_UNMATCH: 60
+        APPEARANCE_INERTIA: 0.95
+        ID_INERTIA: 0.8
+        MATCH_COEF_1: [0, 0, 1] # (id importance, location importance, appearance importance)
+        MATCH_THRESH_1: [1, 50, 0.6] # max cost for a pair (id thresh, location thresh, appearance thresh)
+        MATCH_COEF_2: [1, 1, 9]
+        MATCH_THRESH_2: [0.9, 20, 0.2]
+    location_file: data/track_cluster/campus_dataset/garden1/location.txt
+    track_dir: data/track_cluster/campus_dataset/garden1/track/
+
+postprocess:
+    location_file: data/postprocess/campus_dataset/garden1/location.txt
+    track_dir: data/postprocess/campus_dataset/garden1/track/

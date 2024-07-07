@@ -5,3 +5,5 @@ preprocessing_output/
 bytetrack_output/
 deep-person-reid/weights/
 deep-person-reid/
+data/
+viz/output_videos

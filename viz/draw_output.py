@@ -60,11 +60,60 @@ class Visualizer:
             cap.release()
             video_writer.release()
             logger.info(f"Finish preprocessing {video} and save to {self.config.output.output_dir}/{output_video_file}")
-    
+    def viz_postprocessing_output(self):
+        # Draw annotation to video
+        for i,video in tqdm(enumerate(self.config.input.videos)):
+            annotation = pd.read_csv(self.config.input.annotations[i])
+            annotation = annotation.copy()
+            annotation = annotation.sort_values(by="frame")
+            num_frames = annotation["frame"].unique()
+            cap = cv2.VideoCapture(video)
+            output_video_file = os.path.basename(video)
+            #check output dir exist or not
+            if not os.path.exists(self.config.output.output_dir):
+                os.makedirs(self.config.output.output_dir)
+            
+            # Create video writer
+            video_writer = cv2.VideoWriter(
+                f"{self.config.output.output_dir}/{output_video_file}",
+                cv2.VideoWriter_fourcc(*"mp4v"),
+                self.config.output.fps,
+                self.config.output.size,
+            )
+            frame_idx = 0
+            # Loop through the video
+            while True:
+                if frame_idx > num_frames.max():
+                    break
+                ret,frame = cap.read()
+                if not ret:
+                    break
+                # logger.info(annotation.head())
+                sub_df = annotation[annotation["frame"] == frame_idx][["id","l","t","w","h"]]
+                values = sub_df.values
+                # Loop through the annotation and draw the box with different color if the src is 0 or 1
+                for id,l,t,w,h in values:
+                    
+                    color = (0,0,255)
+                    l,t,w,h = int(l),int(t),int(w),int(h)
+                    cv2.rectangle(frame,(l,t),(l+w,t+h),color,2)
+                    cv2.putText(frame,str(id),(l,t),cv2.FONT_HERSHEY_SIMPLEX,1,(255,255,255),2)
+                video_writer.write(frame)
+                if frame_idx % 100 == 0:
+                    logger.info(f"Processing frame {frame_idx}")
+                frame_idx += 1
+            cap.release()
+            video_writer.release()
+            message = f"Finish preprocessing {video} and save to {self.config.output.output_dir}/{output_video_file}"
+            logger.info(message)
+
+
     def run(self):
         task = self.config.input.task
         if task == 'preprocessing':
             self.viz_preprocessing_output()
+        if task == 'postprocessing':
+            self.viz_postprocessing_output()
         else:
             raise ValueError(f"Task {task} is not supported")
 
