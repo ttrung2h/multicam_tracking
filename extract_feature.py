@@ -10,7 +10,7 @@ from loguru import logger
 class ReIDModel():
     def __init__(self,config):
         self.model_path = config['extracting_feature']['model_path']
-        self.bath_size = config['extracting_feature']['batch_size']
+        self.batch_size = config['extracting_feature']['batch_size']
         self.model_name = config['extracting_feature']['model_name']
         self.extractor = FeatureExtractor(
             model_name= self.model_name,
@@ -25,7 +25,7 @@ class ReIDModel():
 
     def extract(self, imgs):
         features = []
-        for batch_imgs in self.batch(imgs, self.bath_size):
+        for batch_imgs in self.batch(imgs, self.batch_size):
             features.append(self.extractor(batch_imgs))
         features = torch.cat(features, 0).cpu()
         return features
